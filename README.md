@@ -24,15 +24,15 @@ without any hassio in the loop.
 
 ## What it does
 
-It's kind of netlist, consisting of various primitives. Primitives are just blocks with a set of input ports, output ports, and some associated logic for how it drives outputs based on inputs. 
+It's kind of a netlist, consisting of various primitives. Primitives are just blocks with a set of input ports, output ports; what they do is defined by the interpreter (in rust code).
 
-Ports are message based. Ports don't drive a level, like a circuit net. Outputs simply generate events which are passed to any connected inputs. Messages can be "bangs", which basically just means something like "the thing just happened", or they can have arbitrary values. In practice, a bang is just any non-zero value event, and whether it's interpreted as a "bang" or value just depends on the input port receiving it.
+Ports are message based. Ports don't drive a level, like a circuit net. Outputs simply generate events which are passed to any connected inputs. Messages can be "bangs", which basically just means something like "the thing just happened", or they can have arbitrary values. In practice, a bang is just any non-zero value event, and whether it's interpreted as a "bang" or value depends on the input port receiving it.
 
-Events always originate with an external input, which can be received over a hardware input (i.e. a button press) or over a software port (i.e. a message was received from the higher level controller). This input ports connect to primitives, and probably cause those to generate more events in turn cascading through the graph and possibly causing an event to be received by one of the output ports, changing its state.
+Events always originate with an external input, which can be received over a hardware input (i.e. a button press) or over a software port (i.e. a message was received from the higher level controller). These input ports connect to primitives, and probably cause those to generate more events in turn cascading through the graph and possibly causing an event to be received by one of the output ports, changing its state.
 
 ## What are the primitives
 
-This is a good question, and this deserves more thought. As it stands, primitives must be defined in the python library, and also in the Rust simulator, so it would be nice to keep the primitives to a small well defined set that doesn't change much. Larger modules can be built out of primitives, so that graph designers don't have to think too much about the low level primitives (see `TwoButtonDimmer` in [example1.py](example1.py) for example).
+This is a good question, and this deserves more thought. As it stands, primitives must be defined in the python library, and also in the Rust simulator, so it would be nice to keep the primitives to a small, well defined set that doesn't change much. Larger modules can be built out of primitives, so that graph designers don't have to think too much about the low level primitives (see `TwoButtonDimmer` in [example1.py](example1.py) for example).
 
 Primitives can have parameters. For example, the size of a mux/demux is defined by a parameter.
 
